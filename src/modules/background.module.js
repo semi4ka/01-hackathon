@@ -1,31 +1,40 @@
-// import {Module} from '../core/module'
+import {Module} from '../core/module'
+import { random } from "../utils";
 
-// export class BackgroundModule extends Module {
 
-// }
-
-export const foo = () => {
-  class Something {
-    constructor(selector) {
-      this.el = document.querySelector(selector);
-    }
-    show() {
-      this.el.style.display = 'block';
-    }
-    hide() {
-      this.el.style.display = 'none';
-    }
+export class BackgroundModule extends Module {
+  constructor() {
+    super('random background', 'Случайный фон');
   }
-  class SomethingS extends Something {
-    constructor(options) {
-      super(options.selector);
-      this.el.style.width = this.el.style.height = options.size + 'px';
-      this.el.style.background = options.background;
+
+  trigger() {
+    const container = document.querySelector('.container')
+    console.log(container)
+
+    const backgroundArea = document.createElement('div')
+    backgroundArea.className = 'bg-area'
+    container.append(backgroundArea)
+    
+    const buttonColor = document.createElement('button')
+    buttonColor.textContent = 'Cменить фон'
+    backgroundArea.append(buttonColor)
+
+    function createRandomColor() {
+      const colorR = random(0, 255)
+      const colorG = random(0, 255)
+      const colorB = random(0, 255)
+
+      backgroundArea.style.backgroundColor = `rgb(${colorR}, ${colorG}, ${colorB})`
     }
+
+    buttonColor.addEventListener('click', (event) => {
+      const {target} = event
+      if (target) {
+        createRandomColor()
+      }
+    })
+
   }
-  const something = new SomethingS({
-    selector: '#something',
-    size: 100,
-    background: 'green',
-  });
-};
+
+}
+
